@@ -9,14 +9,11 @@
 
 **最後更新**：2026-10-05
 
-- **剛完成**：VPS git 環境修正已收尾（vault 權限、主機驗證、移除強制指定 key 的設定、輪替備份用 deploy key）；新增 push 前的交接檢查 hook。
-- **下一步**：把 git 安全規則寫進 Hermes 的 SOUL.md／記憶。
-  - 規則全文就在本檔「既有環境的風險」的待辦裡，不需要查其他文件。
-  - SOUL.md **不在本 repo**，它在 VPS 上 Hermes 的資料目錄（由 Hermes 備份 repo 管理）。
-  - Claude 連不到 VPS：做法是產出要加入 SOUL.md 的文字與操作指令，由使用者在 VPS 上執行，再把結果貼回來確認。
-  - 本 repo 只負責記錄結果（完成後勾選待辦、更新交接段落）。
-- **再下一步**：進入 Bot 設計，從「選定輕量模型」開始。
-- **待觀察**：下一次 07:00 排程與每日備份是否正常 push、vault 是否出現非 Hermes 使用者擁有的新檔案。
+- **剛完成**：git 安全規則已寫入 VPS 上 Hermes 的 SOUL.md（新增第 5 段 Git & Credential Safety；擁有者與權限維持 hermes／644）。
+- **下一步**：進入 Bot 設計，從「選定輕量模型」開始。
+- **待觀察**：
+  - 在 Telegram 問 Hermes「push 遇到 `Host key verification failed` 會怎麼做」，確認它回答停下回報（新規則是否生效）。
+  - 下一次 07:00 排程與每日備份是否正常 push（SOUL.md 的變更應隨備份 repo 推上去）、vault 是否出現非 Hermes 使用者擁有的新檔案。
 - **Blockers**：無。
 
 ## 專案定位
@@ -63,7 +60,7 @@
 ### 既有環境的風險
 - [x] VPS 上 vault 目錄的檔案權限：已改為 Hermes 執行使用者擁有、目錄 755／檔案 644（2026-10-05）。
 - [x] 容器內 git over SSH 的主機驗證：已移除所有關閉主機驗證的設定，改用已核對指紋的固定 known_hosts（2026-10-05）。
-- [ ] 在 SOUL.md／Hermes 記憶加入 git 安全規則：不得讀取或複製私鑰；不得修改 SSH config、known_hosts、`core.sshCommand`，也不得用關閉主機驗證繞過錯誤；git 認證失敗時停下回報。
+- [x] 在 SOUL.md 加入 git 安全規則：不得讀取或複製私鑰；不得修改 SSH config、known_hosts、`core.sshCommand`（也不設 `GIT_SSH_COMMAND`），不得用關閉主機驗證繞過錯誤；不得對 vault、備份 repo、`.ssh/` 使用 sudo／chown／chmod；git 認證、主機驗證或權限錯誤時停下回報（2026-10-05）。
 - [ ] 觀察下一次 07:00 排程與每日備份：確認 vault 無非 Hermes 使用者擁有的新檔案，兩個 repo 都能正常 push。
 - [ ] 新版 SOUL.md 變長，每次呼叫的 input token 增加；需確認成本影響，以及 Prompt Caching 是否生效。
 
@@ -83,3 +80,4 @@
 
 - **2026-10-05**：本 repo 定位為 Go Telegram Bot，自行重新實作，不沿用 Gemini 的程式碼；設計原則為個人助手優先、兼顧成本與成效。
 - **2026-10-05**：完成 VPS git 環境修正（vault 權限、主機驗證、移除強制指定 key 的設定、清除舊的 git 目錄與重複金鑰）。因無法排除 Hermes 備份用 deploy key 曾被 Agent 讀入對話，已輪替該 key。
+- **2026-10-05**：git 安全規則只寫入 SOUL.md（每次呼叫都會載入），不另存 Hermes 記憶，避免重複與額外 token；另加入禁止對 vault／備份 repo／`.ssh/` 使用 sudo、chown、chmod，以防再次出現檔案擁有者錯亂。
