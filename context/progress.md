@@ -3,6 +3,18 @@
 > 背景來源：`docs/Gemini-AI個人助理-20261004-2233.md`（與 Gemini 的討論紀錄，2026/10/1–10/2）。
 > `docs/` 僅存在本機、不進版控；本文件刻意省略主機路徑、金鑰名稱等環境細節，需要時請查該檔或 VPS 上的設定。
 
+## 交接（每次 push 前更新）
+
+> 由 `.claude/hooks/require-handoff.sh` 強制：即將推送的 commits 沒有更新本檔就無法 push。
+
+**最後更新**：2026-10-05
+
+- **剛完成**：VPS git 環境修正已收尾（vault 權限、主機驗證、移除強制指定 key 的設定、輪替備份用 deploy key）；新增 push 前的交接檢查 hook。
+- **下一步**：把 git 安全規則寫進 Hermes 的 SOUL.md／記憶（規則內容見下方「既有環境的風險」待辦）。這項要在 VPS 上改 Hermes 設定，本 repo 只負責記錄。
+- **再下一步**：進入 Bot 設計，從「選定輕量模型」開始。
+- **待觀察**：下一次 07:00 排程與每日備份是否正常 push、vault 是否出現非 Hermes 使用者擁有的新檔案。
+- **Blockers**：無。
+
 ## 專案定位
 
 - 本 repo 的範圍：**Go Telegram Bot**，負責即時回報進度並寫入 Obsidian vault。
