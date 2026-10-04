@@ -5,11 +5,11 @@
 
 ## 交接（每次 push 前更新）
 
-> 由 `.claude/hooks/require-handoff.sh` 強制：即將推送的 commits 沒有更新本檔就無法 push。
+> 由 `.claude/hooks/require-handoff.sh` 強制：即將推送的 commits 沒有更新本檔就無法 push；Obsidian 的 Nexus `Sync Log.md` 沒有 HEAD hash 也無法 push（流程見 `CLAUDE.md`）。
 
 **最後更新**：2026-10-05
 
-- **剛完成**：git 安全規則已寫入 VPS 上 Hermes 的 SOUL.md（新增第 5 段 Git & Credential Safety；擁有者與權限維持 hermes／644）。
+- **剛完成**：建立 Obsidian 專案資料夾 `~/Documents/obsidian/Alvin/projects/Nexus/`（產品、架構、維運分類），並新增 push 前的同步規則（`CLAUDE.md`）與 hook 檢查。前一項：git 安全規則已寫入 SOUL.md。
 - **下一步**：進入 Bot 設計，從「選定輕量模型」開始。
 - **待觀察**：
   - 在 Telegram 問 Hermes「push 遇到 `Host key verification failed` 會怎麼做」，確認它回答停下回報（新規則是否生效）。
@@ -81,3 +81,4 @@
 - **2026-10-05**：本 repo 定位為 Go Telegram Bot，自行重新實作，不沿用 Gemini 的程式碼；設計原則為個人助手優先、兼顧成本與成效。
 - **2026-10-05**：完成 VPS git 環境修正（vault 權限、主機驗證、移除強制指定 key 的設定、清除舊的 git 目錄與重複金鑰）。因無法排除 Hermes 備份用 deploy key 曾被 Agent 讀入對話，已輪替該 key。
 - **2026-10-05**：git 安全規則只寫入 SOUL.md（每次呼叫都會載入），不另存 Hermes 記憶，避免重複與額外 token；另加入禁止對 vault／備份 repo／`.ssh/` 使用 sudo、chown、chmod，以防再次出現檔案擁有者錯亂。
+- **2026-10-05**：產品與架構文件放在 Obsidian `projects/Nexus/`（Product／Architecture／Operations 子資料夾），只有 `Nexus.md` 用 `type: project`，其餘用 `type: project-doc` 以免進入 Projects MOC。每次 push 前依 `CLAUDE.md` 同步並在 `Sync Log.md` 記下 HEAD hash，由 hook 檢查。此資料夾結構是 vault「projects 純扁平」規則的例外，經使用者指定。
