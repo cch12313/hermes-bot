@@ -5,7 +5,7 @@
 
 ## 交接（每次 push 前更新）
 
-> 由 `.claude/hooks/require-handoff.sh` 強制：即將推送的 commits 沒有更新本檔就無法 push；Obsidian 的 Nexus `Sync Log.md` 沒有 HEAD hash 也無法 push（流程見 `CLAUDE.md`）。
+> 由 `.claude/hooks/require-handoff.sh` 強制：即將推送的 commits 沒有更新本檔就無法 push；Obsidian 的 Nexus `Nexus Sync Log.md` 沒有 HEAD hash 也無法 push（流程見 `CLAUDE.md`）。
 
 **最後更新**：2026-10-05
 
@@ -81,4 +81,5 @@
 - **2026-10-05**：本 repo 定位為 Go Telegram Bot，自行重新實作，不沿用 Gemini 的程式碼；設計原則為個人助手優先、兼顧成本與成效。
 - **2026-10-05**：完成 VPS git 環境修正（vault 權限、主機驗證、移除強制指定 key 的設定、清除舊的 git 目錄與重複金鑰）。因無法排除 Hermes 備份用 deploy key 曾被 Agent 讀入對話，已輪替該 key。
 - **2026-10-05**：git 安全規則只寫入 SOUL.md（每次呼叫都會載入），不另存 Hermes 記憶，避免重複與額外 token；另加入禁止對 vault／備份 repo／`.ssh/` 使用 sudo、chown、chmod，以防再次出現檔案擁有者錯亂。
-- **2026-10-05**：產品與架構文件放在 Obsidian `projects/Nexus/`（Product／Architecture／Operations 子資料夾），只有 `Nexus.md` 用 `type: project`，其餘用 `type: project-doc` 以免進入 Projects MOC。每次 push 前依 `CLAUDE.md` 同步並在 `Sync Log.md` 記下 HEAD hash，由 hook 檢查。此資料夾結構是 vault「projects 純扁平」規則的例外，經使用者指定。
+- **2026-10-05**：產品與架構文件放在 Obsidian `projects/Nexus/`（Product／Architecture／Operations 子資料夾），只有 `Nexus.md` 用 `type: project`，其餘用 `type: project-doc` 以免進入 Projects MOC。每次 push 前依 `CLAUDE.md` 同步並在 `Nexus Sync Log.md` 記下 HEAD hash，由 hook 檢查。此資料夾結構是 vault「projects 純扁平」規則的例外，經使用者指定。
+- **2026-10-05**：Nexus 子筆記檔名一律加 `Nexus ` 前綴（Obsidian 的 wikilink 只認檔名，通用檔名如 `Roadmap` 會跨專案撞名）；並在 vault `CLAUDE.md` 正式加入「大型專案可用同名資料夾」規則，取代原本的一次性例外。

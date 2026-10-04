@@ -12,19 +12,19 @@ Go Telegram Bot，屬於個人 AI 助理系統 Nexus。開始工作前先讀 `co
    |---|---|
    | 進度、下一步、待辦 | `Nexus.md` 的 `## Status`、`## Current Todo`（整段覆蓋，反映現況） |
    | 新決策 | `Nexus.md` 的 `## Key Decisions Log`（追加一行結論，不含理由） |
-   | 階段、待辦分組 | `Product/Roadmap.md` |
-   | 定位、原則、範圍 | `Product/Product Vision.md` |
-   | 元件、資料流 | `Architecture/System Overview.md` |
-   | Hermes、SOUL.md | `Architecture/Hermes Agent.md` |
-   | Bot 設計或實作 | `Architecture/Telegram Bot.md` |
-   | vault 同步、寫入、並發 | `Architecture/Vault Sync.md` |
-   | VPS、SSH、權限 | `Operations/VPS Environment.md` |
-   | 安全規則 | `Operations/Security Rules.md` |
+   | 階段、待辦分組 | `Product/Nexus Roadmap.md` |
+   | 定位、原則、範圍 | `Product/Nexus Product Vision.md` |
+   | 元件、資料流 | `Architecture/Nexus System Overview.md` |
+   | Hermes、SOUL.md | `Architecture/Nexus Hermes Agent.md` |
+   | Bot 設計或實作 | `Architecture/Nexus Telegram Bot.md` |
+   | vault 同步、寫入、並發 | `Architecture/Nexus Vault Sync.md` |
+   | VPS、SSH、權限 | `Operations/Nexus VPS Environment.md` |
+   | 安全規則 | `Operations/Nexus Security Rules.md` |
 
    有改的筆記同時更新 frontmatter 的 `updated`。新增分類或筆記時，同步更新 `Nexus.md` 的筆記地圖。
-2. 在 `Sync Log.md` 的 `## Log` 追加一行：`- YYYY-MM-DD <HEAD 7 碼短 hash>：<一句話摘要>；更新：<筆記清單>`。沒有筆記需要改時也要追加，更新寫「無」。
+2. 在 `Nexus Sync Log.md` 的 `## Log` 追加一行：`- YYYY-MM-DD <HEAD 7 碼短 hash>：<一句話摘要>；更新：<筆記清單>`。沒有筆記需要改時也要追加，更新寫「無」。
 
-`.claude/hooks/require-handoff.sh` 會檢查 `Sync Log.md` 是否含即將推送的 HEAD hash，沒有就擋下 push。
+`.claude/hooks/require-handoff.sh` 會檢查 `Nexus Sync Log.md` 是否含即將推送的 HEAD hash，沒有就擋下 push。
 
 寫入規則：
 - 遵守 vault 的 `~/Documents/obsidian/Alvin/CLAUDE.md`（英文檔名、bare date、tag 先查 `Tags.md`）。
