@@ -39,19 +39,31 @@
 - [ ] 找不到今日 Daily Note 時的處理方式。
 - [ ] Telegram User ID 白名單。
 - [ ] Git 同步流程：先 pull 再寫入；push 失敗要回報給使用者，不能吞掉錯誤。
+- [ ] Bot 寫入 vault 時必須使用與 Hermes 容器相同的執行使用者（UID），否則會再次出現檔案擁有者不一致與 git `dubious ownership`。
 - [ ] Bot 與 Hermes 同時寫 vault 時的並發與衝突處理。
 - [ ] Bot 與 Hermes 是否共用同一個 Telegram bot token，以及兩者的分工。
-- [ ] 部署方式，以及容器內 SSH key、known_hosts、git 設定與掛載路徑。
+- [ ] 部署方式，以及容器內 SSH key、known_hosts、git 設定與掛載路徑（沿用下方「VPS git 環境現況」的原則）。
 
 ### 既有環境的風險
-- [ ] VPS 上 vault 目錄的檔案權限：檢視目前設定，改為最小權限（細節見本機 docs）。
-- [ ] 容器內 git over SSH 的主機驗證設定：檢視並改為固定 known_hosts（細節見本機 docs）。
+- [x] VPS 上 vault 目錄的檔案權限：已改為 Hermes 執行使用者擁有、目錄 755／檔案 644（2026-10-05）。
+- [x] 容器內 git over SSH 的主機驗證：已移除所有關閉主機驗證的設定，改用已核對指紋的固定 known_hosts（2026-10-05）。
+- [ ] 在 SOUL.md／Hermes 記憶加入 git 安全規則：不得讀取或複製私鑰；不得修改 SSH config、known_hosts、`core.sshCommand`，也不得用關閉主機驗證繞過錯誤；git 認證失敗時停下回報。
+- [ ] 觀察下一次 07:00 排程與每日備份：確認 vault 無非 Hermes 使用者擁有的新檔案，兩個 repo 都能正常 push。
 - [ ] 新版 SOUL.md 變長，每次呼叫的 input token 增加；需確認成本影響，以及 Prompt Caching 是否生效。
 
 ### 之後再說
 - [ ] Google Calendar 串接（目前用 iCloud，有需要再開放）。
 - [ ] Sparring 對練的互動流程（按鈕、session 狀態機、`/end` 沉澱成 ADR）。
 
+## VPS git 環境現況（2026-10-05 整理）
+
+- Hermes 容器內以非 root 的專用使用者執行，所有 git 操作都在容器內以該使用者進行，不在 host 上用 root 操作 vault 或備份 repo。
+- 兩個 repo 各用一把 deploy key，透過 SSH config 的 Host 別名區分；不使用全域或 repo 層級的 `core.sshCommand` 強制指定 key（它會蓋過 Host 別名，導致用錯 key）。
+- 各 Host 設定 `IdentitiesOnly yes`，只提供指定的 key。
+- 主機驗證使用已對照 GitHub 官方指紋的 known_hosts，不使用 `StrictHostKeyChecking no`。
+- 細節（路徑、金鑰名稱、診斷過程）見本機 docs，不寫入本公開 repo。
+
 ## 決策紀錄
 
 - **2026-10-05**：本 repo 定位為 Go Telegram Bot，自行重新實作，不沿用 Gemini 的程式碼；設計原則為個人助手優先、兼顧成本與成效。
+- **2026-10-05**：完成 VPS git 環境修正（vault 權限、主機驗證、移除強制指定 key 的設定、清除舊的 git 目錄與重複金鑰）。因無法排除 Hermes 備份用 deploy key 曾被 Agent 讀入對話，已輪替該 key。
